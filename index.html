@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Promethia · Student Portfolio (Demo, sample data)</title>
+<meta name="description" content="Demo of the Promethia parent-facing student portfolio. Sample child, not a real student.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><path d='M16 3c3 6 9 9 9 17a9 9 0 0 1-18 0c0-5 3-7 4-11 1 3 2 4 3 5 0-5 0-8 2-11z' fill='%23f26b21'/></svg>">
+<style>
+:root{--navy:#1a2a4f;--orange:#f26b21;--ink:#1f2937;--muted:#6b7280;--line:#e8ebf2;--soft:#f6f7fb;--peach:#fff3ec}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:#fff;line-height:1.5}
+a{color:var(--navy)}
+.banner{background:var(--navy);color:#fff;text-align:center;font-size:13px;padding:8px 12px;letter-spacing:.2px}
+.banner b{color:#ffb88f}
+.wrap{max-width:1080px;margin:0 auto;padding:0 18px 48px}
+header.top{display:flex;align-items:center;justify-content:space-between;padding:16px 0}
+.brand{display:flex;align-items:center;gap:8px;font-weight:800;color:var(--navy);font-size:19px;text-decoration:none}
+.tabs{display:flex;gap:6px;font-size:14px}
+.tabs span{padding:6px 12px;border-radius:999px;color:var(--muted)}
+.tabs .on{background:var(--peach);color:var(--orange);font-weight:700}
+.pill{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:3px 9px;border-radius:999px;background:var(--peach);color:var(--orange)}
+.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px}
+h2{font-size:13px;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin:34px 0 12px;font-weight:700}
+h3{margin:0 0 6px;font-size:17px;color:var(--navy)}
+p{margin:0}
+.muted{color:var(--muted);font-size:14px}
+/* profile */
+.profile{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.avatar{width:72px;height:72px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:30px;font-weight:800;position:relative;flex:none}
+.avatar::after{content:"";position:absolute;right:-2px;bottom:-2px;width:24px;height:24px;border-radius:50%;background:var(--orange) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 6c2 4 6 6 6 11a6 6 0 0 1-12 0c0-3 2-5 3-7 0 2 1 3 2 3 0-3 0-5 1-7z' fill='%23fff'/%3E%3C/svg%3E") center/16px no-repeat;border:3px solid #fff}
+.pname{font-size:24px;font-weight:800;color:var(--navy);margin:2px 0}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.btn{border:0;border-radius:12px;padding:11px 16px;font-weight:700;font-size:14px;cursor:pointer;font-family:inherit}
+.btn.primary{background:var(--orange);color:#fff}
+.btn.ghost{background:#fff;color:var(--navy);border:1.5px solid var(--navy)}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.show{opacity:1}
+/* snapshot */
+.grid{display:grid;gap:12px}
+.snap{grid-template-columns:1fr 1fr}
+.stat .big{font-size:28px;font-weight:800;color:var(--navy);line-height:1.1}
+.stat .big small{font-size:15px;color:var(--muted);font-weight:600}
+.spark{grid-column:1/-1}
+.sparkrow{display:flex;align-items:center;gap:14px}
+.sparkrow svg{flex:1;height:56px}
+.cfnum{text-align:center;min-width:52px}
+.cfnum b{display:block;font-size:22px;color:var(--navy)}
+.cfnum.now b{color:var(--orange)}
+.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.badge{display:flex;align-items:center;gap:6px;background:var(--soft);border-radius:999px;padding:6px 11px;font-size:13px;font-weight:600;color:var(--navy)}
+.badge i{font-style:normal}
+/* videos */
+.pair{grid-template-columns:1fr}
+.video{position:relative;border-radius:16px;overflow:hidden;aspect-ratio:16/9;display:block;cursor:pointer;border:0;padding:0;width:100%;font-family:inherit;text-align:left}
+.video .poster{position:absolute;inset:0}
+.video .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:58px;height:58px;border-radius:50%;background:rgba(255,255,255,.95);display:grid;place-items:center;box-shadow:0 6px 20px rgba(0,0,0,.18)}
+.video .play::before{content:"";border-left:18px solid var(--orange);border-top:11px solid transparent;border-bottom:11px solid transparent;margin-left:5px}
+.video .dur{position:absolute;right:10px;bottom:10px;background:rgba(0,0,0,.6);color:#fff;font-size:12px;font-weight:700;padding:2px 8px;border-radius:6px}
+.video .tag{position:absolute;left:10px;top:10px;background:#fff;color:var(--navy);font-size:11px;font-weight:800;padding:3px 9px;border-radius:999px;text-transform:uppercase;letter-spacing:.4px}
+.vcap{margin-top:8px}
+.vcap b{color:var(--navy)}
+.clips{display:grid;grid-auto-flow:column;grid-auto-columns:62%;gap:12px;overflow-x:auto;padding-bottom:6px;scroll-snap-type:x mandatory}
+.clips>div{scroll-snap-align:start}
+.clips .video .play{width:40px;height:40px}
+.clips .video .play::before{border-left-width:13px;border-top-width:8px;border-bottom-width:8px;margin-left:4px}
+/* domains */
+.domains{grid-template-columns:1fr}
+.thumb{border-radius:12px;overflow:hidden;background:var(--soft);aspect-ratio:16/8;margin-bottom:12px}
+.thumb svg{width:100%;height:100%;display:block}
+.skill{margin-top:12px}
+.skill .lbl{display:flex;justify-content:space-between;font-size:13px;font-weight:700;color:var(--navy)}
+.dots{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:6px}
+.dots span{height:8px;border-radius:4px;background:var(--line)}
+.dots span.on{background:var(--orange)}
+.note{font-size:14px;margin-top:8px;color:var(--ink)}
+.note::before{content:"Mentor: ";font-weight:700;color:var(--navy)}
+.linkish{font-size:13px;font-weight:700;color:var(--orange);text-decoration:none;display:inline-block;margin-top:10px}
+/* lists */
+.four{grid-template-columns:1fr}
+ul.clean{list-style:none;margin:0;padding:0}
+ul.clean li{padding:9px 0;border-top:1px solid var(--line);font-size:15px}
+ul.clean li:first-child{border-top:0;padding-top:2px}
+ul.clean li b{color:var(--navy)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--peach);color:#b4480f;border-radius:999px;padding:6px 12px;font-size:14px;font-weight:600}
+.home{margin-top:12px;background:var(--soft);border-radius:12px;padding:12px;font-size:14px}
+.home b{color:var(--orange)}
+.goal{display:flex;gap:10px;align-items:flex-start}
+.goal .n{flex:none;width:24px;height:24px;border-radius:50%;background:var(--navy);color:#fff;font-size:12px;font-weight:800;display:grid;place-items:center;margin-top:1px}
+/* mentor + demo day */
+.two{grid-template-columns:1fr}
+.quote{font-size:16px;color:var(--ink)}
+.sig{margin-top:10px;font-size:13px;color:var(--muted)}
+.promo{display:flex;gap:12px;align-items:flex-start;background:var(--navy);color:#fff;border-color:var(--navy)}
+.promo h3{color:#fff}
+.promo .muted{color:#c9d1e6}
+footer{margin-top:40px;font-size:13px;color:var(--muted);text-align:center}
+@media (min-width:760px){
+ .wrap{padding:0 28px 64px}
+ .snap{grid-template-columns:repeat(3,1fr)}
+ .spark{grid-column:auto / span 3}
+ .pair{grid-template-columns:1fr 1fr}
+ .clips{grid-auto-columns:calc((100% - 36px)/4)}
+ .domains{grid-template-columns:repeat(3,1fr)}
+ .four{grid-template-columns:1fr 1fr}
+ .two{grid-template-columns:1.3fr 1fr}
+ .headrow{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap}
+ .headrow .actions{margin-top:0}
+}
+@media (min-width:1100px){
+ .snap{grid-template-columns:1fr 1fr 1fr 2fr}
+ .spark{grid-column:auto}
+}
+</style>
+</head>
+<body>
+<div class="banner"><b>Demo</b> — sample child, not a real student. All names, scores and videos below are <b>SAMPLE DATA</b>.</div>
+<div class="wrap">
+<header class="top">
+ <a class="brand" href="#"><svg width="22" height="22" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3c3 6 9 9 9 17a9 9 0 0 1-18 0c0-5 3-7 4-11 1 3 2 4 3 5 0-5 0-8 2-11z" fill="#f26b21"/></svg>Promethia</a>
+ <nav class="tabs" aria-label="Site sections"><span>Home</span><span class="on">Portfolio</span></nav>
+</header>
+
+<section class="headrow">
+ <div class="profile">
+  <div class="avatar" aria-label="Illustrated initial avatar">A</div>
+  <div>
+   <span class="pill">Parent view · Sample</span>
+   <div class="pname">Aarav S. (sample)</div>
+   <div class="muted">Grade 6 · Cohort B · Project Elevate Promethia (pilot)</div>
+  </div>
+ </div>
+ <div class="actions">
+  <button class="btn primary" data-toast="Demo only: the PDF report will download here.">⬇ Download report (PDF)</button>
+  <button class="btn ghost" data-toast="Demo only: a private family link will be shared here.">Share with family</button>
+ </div>
+</section>
+
+<h2>Snapshot</h2>
+<div class="grid snap">
+ <div class="card stat"><div class="big">11<small> / 12</small></div><div class="muted">Sessions attended</div></div>
+ <div class="card stat"><div class="big">6</div><div class="muted">Projects completed</div></div>
+ <div class="card stat"><div class="big">4</div><div class="muted">Badges earned</div>
+ </div>
+ <div class="card spark">
+  <div class="muted" style="margin-bottom:6px"><b style="color:var(--navy)">Confidence trend</b> · self-rated slip after each session (1–5)</div>
+  <div class="sparkrow">
+   <div class="cfnum"><b>2</b><span class="muted">Day 1</span></div>
+   <svg viewBox="0 0 220 56" preserveAspectRatio="none" role="img" aria-label="Confidence rose from 2 on Day 1 to 4.5 in the latest session">
+    <polyline fill="none" stroke="#e8ebf2" stroke-width="1" points="0,50 220,50"/>
+    <polyline fill="none" stroke="#1a2a4f" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"
+     points="4,42 24,42 44,36 64,38 84,30 104,30 124,24 144,20 164,22 184,14 204,10 216,8"/>
+    <circle cx="216" cy="8" r="4" fill="#f26b21"/>
+   </svg>
+   <div class="cfnum now"><b>4.5</b><span class="muted">Latest</span></div>
+  </div>
+ </div>
+</div>
+<div class="badges" style="margin-top:12px">
+ <span class="badge"><i>🎤</i>First Time on Stage</span>
+ <span class="badge"><i>📖</i>Story Builder</span>
+ <span class="badge"><i>🤖</i>AI Trainer</span>
+ <span class="badge"><i>🤝</i>Kind Feedback Giver</span>
+</div>
+
+<h2>Recordings</h2>
+<div class="grid pair">
+ <div>
+  <button class="video" data-toast="Sample video placeholder — the child's recording plays here.">
+   <svg class="poster" viewBox="0 0 160 90" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="160" height="90" fill="#dfe4ef"/><rect y="62" width="160" height="28" fill="#cbd3e4"/><circle cx="80" cy="40" r="11" fill="#b3bdd4"/><rect x="66" y="52" width="28" height="22" rx="10" fill="#b3bdd4"/></svg>
+   <span class="tag">Before · Day 1</span><span class="play"></span><span class="dur">0:45</span>
+  </button>
+  <div class="vcap"><b>“Who Am I”</b> <span class="muted">— first introduction, Day 1</span></div>
+ </div>
+ <div>
+  <button class="video" data-toast="Sample video placeholder — the child's recording plays here.">
+   <svg class="poster" viewBox="0 0 160 90" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="160" height="90" fill="#1a2a4f"/><path d="M0 90 L50 20 L110 20 L160 90Z" fill="#f26b21" opacity=".18"/><rect y="70" width="160" height="20" fill="#13203d"/><circle cx="80" cy="38" r="11" fill="#9aa8c7"/><rect x="66" y="50" width="28" height="22" rx="10" fill="#9aa8c7"/><rect x="100" y="44" width="34" height="22" rx="3" fill="#2c3f6c"/></svg>
+   <span class="tag">After · Demo Day</span><span class="play"></span><span class="dur">1:30</span>
+  </button>
+  <div class="vcap"><b>Demo Day pitch</b> <span class="muted">— “Promo’s Quest”, on stage</span></div>
+ </div>
+</div>
+<div class="muted" style="margin:18px 0 10px"><b style="color:var(--navy)">Session clips</b> · swipe →</div>
+<div class="clips">
+ <div><button class="video" data-toast="Sample clip placeholder."><svg class="poster" viewBox="0 0 160 90" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="160" height="90" fill="#fff3ec"/><circle cx="40" cy="45" r="16" fill="#ffd9c2"/><circle cx="120" cy="45" r="16" fill="#ffd9c2"/></svg><span class="play"></span><span class="dur">0:58</span></button><div class="vcap muted">Story — start of program</div></div>
+ <div><button class="video" data-toast="Sample clip placeholder."><svg class="poster" viewBox="0 0 160 90" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="160" height="90" fill="#eef1f8"/><rect x="40" y="20" width="80" height="50" rx="6" fill="#d5dbea"/></svg><span class="play"></span><span class="dur">1:12</span></button><div class="vcap muted">Story — end of program</div></div>
+ <div><button class="video" data-toast="Sample clip placeholder."><svg class="poster" viewBox="0 0 160 90" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="160" height="90" fill="#e7ecf7"/><rect x="30" y="25" width="100" height="40" rx="20" fill="#c9d3ea"/></svg><span class="play"></span><span class="dur">0:40</span></button><div class="vcap muted">Teaching the AI model</div></div>
+ <div><button class="video" data-toast="Sample clip placeholder."><svg class="poster" viewBox="0 0 160 90" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="160" height="90" fill="#fff3ec"/><path d="M20 70h120" stroke="#ffc9a8" stroke-width="6"/><circle cx="80" cy="40" r="14" fill="#ffc9a8"/></svg><span class="play"></span><span class="dur">0:35</span></button><div class="vcap muted">Peer feedback circle</div></div>
+</div>
+
+<h2>Across the three domains</h2>
+<div class="grid domains">
+ <article class="card">
+  <div class="thumb"><svg viewBox="0 0 200 100" aria-label="Demo Day stage artifact"><rect width="200" height="100" fill="#1a2a4f"/><path d="M60 100 L85 30 L115 30 L140 100Z" fill="#f26b21" opacity=".25"/><circle cx="100" cy="48" r="10" fill="#fff"/><rect x="88" y="60" width="24" height="26" rx="8" fill="#fff"/><text x="10" y="18" fill="#fff" font-size="10" font-family="system-ui" font-weight="700">90-sec pitch</text></svg></div>
+  <span class="pill">Public Speaking</span>
+  <h3 style="margin-top:8px">From 45 seconds to 90 on stage</h3>
+  <p class="note">Aarav now pauses before his key point and looks at the audience. His voice carries to the back row.</p>
+  <div class="skill"><div class="lbl"><span>Skill level</span><span>4 / 5</span></div><div class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div></div>
+ </article>
+ <article class="card">
+  <div class="thumb"><svg viewBox="0 0 200 100" aria-label="6-panel comic artifact"><rect width="200" height="100" fill="#fff"/><g fill="#fff3ec" stroke="#1a2a4f" stroke-width="2"><rect x="8" y="8" width="58" height="38" rx="4"/><rect x="71" y="8" width="58" height="38" rx="4"/><rect x="134" y="8" width="58" height="38" rx="4"/><rect x="8" y="54" width="58" height="38" rx="4"/><rect x="71" y="54" width="58" height="38" rx="4"/><rect x="134" y="54" width="58" height="38" rx="4"/></g><path d="M163 30c2 4 6 6 6 10a6 6 0 0 1-12 0c0-3 2-4 3-7 1 2 1 2 2 3 0-2 0-4 1-6z" fill="#f26b21"/><circle cx="30" cy="30" r="7" fill="#1a2a4f"/><circle cx="100" cy="76" r="7" fill="#1a2a4f"/></svg></div>
+  <span class="pill">Storytelling</span>
+  <h3 style="margin-top:8px">6-panel comic + picture-book page</h3>
+  <p class="note">His stories have a clear beginning, a problem and a funny twist. The end-of-program story was twice as long as the first.</p>
+  <div class="skill"><div class="lbl"><span>Skill level</span><span>4 / 5</span></div><div class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span></div></div>
+  <a class="linkish" href="#" data-toast="Demo only: the full comic opens here.">View comic →</a>
+ </article>
+ <article class="card">
+  <div class="thumb"><svg viewBox="0 0 200 100" aria-label="Scratch game and AI model artifact"><rect width="200" height="100" fill="#eef1f8"/><rect x="10" y="10" width="110" height="80" rx="6" fill="#fff" stroke="#d5dbea"/><rect x="18" y="70" width="94" height="12" rx="3" fill="#cbd3e4"/><circle cx="50" cy="52" r="8" fill="#f26b21"/><rect x="80" y="40" width="16" height="30" fill="#1a2a4f"/><g font-family="system-ui" font-size="8" font-weight="700"><rect x="128" y="14" width="64" height="16" rx="8" fill="#1a2a4f"/><text x="136" y="25" fill="#fff">✋ jump 92%</text><rect x="128" y="36" width="64" height="16" rx="8" fill="#fff" stroke="#d5dbea"/><text x="136" y="47" fill="#1a2a4f">✊ stop 88%</text></g><text x="128" y="80" font-family="system-ui" font-size="8" fill="#6b7280">Teachable Machine</text></svg></div>
+  <span class="pill">Basics of AI</span>
+  <h3 style="margin-top:8px">Scratch game with a hand-gesture control</h3>
+  <p class="note">He trained a model on 3 hand gestures and tested it with friends to fix mistakes. Curious about why the AI sometimes gets it wrong.</p>
+  <div class="skill"><div class="lbl"><span>Skill level</span><span>3 / 5</span></div><div class="dots"><span class="on"></span><span class="on"></span><span class="on"></span><span></span><span></span></div></div>
+  <a class="linkish" href="#" data-toast="Demo only: the Scratch game link opens here.">Play the Scratch game →</a>
+ </article>
+</div>
+
+<h2>About Aarav (sample)</h2>
+<div class="grid four">
+ <div class="card">
+  <h3>⭐ Good at</h3>
+  <ul class="clean">
+   <li><b>Making people laugh</b> — uses humour to hold the room.</li>
+   <li><b>Building on ideas</b> — takes a teammate’s idea and makes it bigger.</li>
+   <li><b>Sticking with a problem</b> — retrained his AI model 4 times until it worked.</li>
+  </ul>
+ </div>
+ <div class="card">
+  <h3>💡 Interests</h3>
+  <div class="chips">
+   <span class="chip">Cricket</span><span class="chip">Space & planets</span><span class="chip">Comics</span><span class="chip">Video games</span><span class="chip">Drawing robots</span>
+  </div>
+  <p class="muted" style="margin-top:12px">Picked by Aarav on his Day-1 card and seen in his projects.</p>
+ </div>
+ <div class="card">
+  <h3>🎯 Can achieve next</h3>
+  <ul class="clean">
+   <li class="goal"><span class="n">1</span><span>Speak for <b>2 minutes</b> without notes on a topic he loves.</span></li>
+   <li class="goal"><span class="n">2</span><span>Add a <b>second level</b> to his Scratch game.</span></li>
+   <li class="goal"><span class="n">3</span><span>Lead his team’s next story as <b>narrator</b>.</span></li>
+  </ul>
+ </div>
+ <div class="card">
+  <h3>🌱 How to get better</h3>
+  <ul class="clean">
+   <li>Slow down in the first 10 seconds — the start sets the tone.</li>
+   <li>Give quieter teammates a turn before adding his own idea.</li>
+   <li>Write the story ending first, so the middle has somewhere to go.</li>
+  </ul>
+  <div class="home"><b>Try at home this week:</b> At dinner, ask Aarav to tell a 1-minute story about his day with a beginning, a problem and an ending. Just listen and clap — no corrections.</div>
+ </div>
+</div>
+
+<h2>Notes</h2>
+<div class="grid two">
+ <div class="card">
+  <span class="pill">Mentor’s note</span>
+  <p class="quote" style="margin-top:10px">“On Day 1, Aarav spoke softly and looked at the floor. By week four he was volunteering to go first. He is a natural entertainer who is learning that slowing down makes people listen even more. We are proud of how kindly he gives feedback to others.”</p>
+  <p class="sig">— Sample mentor, Cohort B</p>
+ </div>
+ <div class="card promo">
+  <svg width="40" height="40" viewBox="0 0 32 32" style="flex:none" aria-label="Promo the torch flame"><path d="M16 3c3 6 9 9 9 17a9 9 0 0 1-18 0c0-5 3-7 4-11 1 3 2 4 3 5 0-5 0-8 2-11z" fill="#f26b21"/><circle cx="13" cy="20" r="1.6" fill="#fff"/><circle cx="19" cy="20" r="1.6" fill="#fff"/><path d="M13 24q3 2 6 0" stroke="#fff" stroke-width="1.4" fill="none" stroke-linecap="round"/></svg>
+  <div>
+   <span class="pill">Demo Day highlight</span>
+   <h3 style="margin-top:8px">Promo’s Quest</h3>
+   <p class="muted">Aarav’s team turned their story into a Scratch game where a wave of your hand helps Promo cross the river. Aarav pitched it on stage and answered two audience questions on his own.</p>
+  </div>
+ </div>
+</div>
+
+<footer>Promethia · Bangalore · Portfolio demo with sample data only. Not a real student.</footer>
+</div>
+<div class="toast" id="toast" role="status"></div>
+<script>
+const t=document.getElementById('toast');let h;
+document.querySelectorAll('[data-toast]').forEach(el=>el.addEventListener('click',e=>{e.preventDefault();t.textContent=el.dataset.toast;t.classList.add('show');clearTimeout(h);h=setTimeout(()=>t.classList.remove('show'),2200)}));
+</script>
+</body>
+</html>
